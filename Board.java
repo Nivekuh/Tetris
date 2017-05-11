@@ -9,10 +9,6 @@ public class Board{
 		queue = new ArrayList<Tetromino>();
 	}
 	
-	public void addTetromino(Tetromino obj){
-		
-	}
-	
 	public boolean hasObjectAtPosition(Position pos){
 		return false;
 	}
