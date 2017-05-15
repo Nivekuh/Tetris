@@ -1,21 +1,42 @@
-import java.awt.Color;
-
-public enum PieceType {
-	LINE,
-	TBLOCK,
-	SQUARE,
-	LBLOCK,
-	RLBLOCK,
-	SBLOCK,
-	RSBLOCK
-}
+import java.util.Random;
+import java.lang.Math;
 
 public class Tetromino{
-	private Piece[] components;
+	private Piece[]components;
 	private Piece anchor;
 	private Position pos;
-	
-	public Tetromino(Positon pos, PieceType type){
-		
+
+	public Tetromino(){
+		String[] Blocks = {"Straight", "LRight", "LLeft", "Square", "ZRight", "T", "ZLeft"};
+		String NextBlock = Blocks[(int)(Math.random()*7)];
+
+		if(NextBlock.equals("Straight"))
+		{
+			//Create
+		}
+		else if
+		{
+			//create
+		}
+		else if
+		{
+			//create
+		}
+		else if
+		{
+			//create
+		}
+		else if
+		{
+			//create
+		}
+		else if
+		{
+			//create
+		}
+		else
+		{
+			//create
+		}
 	}
 }
