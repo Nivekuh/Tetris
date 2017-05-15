@@ -6,7 +6,7 @@ public class Board{
 	private ArrayList<Tetromino> queue;
 	
 	public Board(int x, int y /*Dimensions*/){
-		board = new Piece[y][x];
+		board = new Rectangle[y][x];
 		queue = new ArrayList<Tetromino>();
 	}
 	

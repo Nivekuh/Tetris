@@ -7,7 +7,7 @@ public class Tetromino{
 	private Position pos;
 
 	public Tetromino(){
-		String[] Blocks = {"Straight", "LRight", "LLeft", "Square", "ZRight", "T", "ZLeft"};
+		String[] Blocks = {"I", "J", "L", "O", "Z", "T", "S"};
 		String NextBlock = Blocks[(int)(Math.random()*7)];
 
 		if(NextBlock.equals("Straight"))
