@@ -1,2 +1,0 @@
-# WhyIsVinceSoBad
-Seriously, he sucks.
