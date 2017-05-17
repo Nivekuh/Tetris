@@ -7,10 +7,17 @@ public class Tetris
 		board = new Board(10, 24);
 	}
 
-	public static void gameLoop(){
+	public static void gameLoop()
+	{
 	}
 	
-	public static void Drop(){
+	public static void Drop()
+	{
+		
+	}
+
+	public static void move()
+	{
 		
 	}
 	
