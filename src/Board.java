@@ -1,11 +1,12 @@
 import java.util.ArrayList;
+import java.awt.Rectangle;
 
 public class Board{
-	private Piece[][] board; /*Row, Column*/
+	private Rectangle[][] board; /*Row, Column*/
 	private ArrayList<Tetromino> queue;
 	
 	public Board(int x, int y /*Dimensions*/){
-		board = new Piece[y][x];
+		board = new Rectangle[y][x];
 		queue = new ArrayList<Tetromino>();
 	}
 	
