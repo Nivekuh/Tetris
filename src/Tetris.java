@@ -1,6 +1,8 @@
+package src;
+
 public class Tetris
 {
-	Board board;
+	private static Board board;
 
 	public static void main(String[] args)
 	{

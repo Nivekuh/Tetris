@@ -1,3 +1,5 @@
+package src;
+
 public class Position{ /*Essentially a Struct*/
 	public int x;
 	public int y;

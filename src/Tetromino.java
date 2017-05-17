@@ -1,3 +1,5 @@
+package src;
+
 import java.lang.Math;
 import javafx.scene.shape.*;
 
