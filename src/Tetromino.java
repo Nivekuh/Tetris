@@ -6,8 +6,8 @@ import javafx.scene.shape.*;
 public class Tetromino{
 	public static String[] Blocks = {"I", "J", "L", "O", "Z", "T", "S"};
 
-	private Rectangle[] components;
-	private Position pos;
+	public Rectangle[] components;
+	public Position pos;
 
 	public Tetromino(){
 		String nextBlock = Blocks[(int)(Math.random()*7)];
