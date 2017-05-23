@@ -21,13 +21,14 @@ public class Main extends Application {
     private Group root;
     //Board
     private GridPane boardGrid;
+    private Board board;
     //Menu
     private Button start;
 
     private int gameState = 0; //Menu, Playing, Game Over/Paused
 
     public void start(Stage primaryStage) throws Exception{
-        dimensions = Controller.getDimensions();
+        dimensions = Board.getDimensions();
 
         root = new Group();
         root.getStyleClass().add("base");
@@ -37,13 +38,13 @@ public class Main extends Application {
         stage.getScene().getStylesheets().add("src/style.css");
         stage.show();
 
-        Controller.init();
-
         setupMenu();
         setupEventHandlers();
     }
 
     public void setupEventHandlers(){
+        Main m = this;
+
         stage.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent event) {
                 System.out.println("Key Pressed: " + event.getCode());
@@ -60,6 +61,7 @@ public class Main extends Application {
             public void handle(ActionEvent e) {
                 if(gameState == 0) {
                     setupGameBoard();
+                    board = new Board(dimensions[0], dimensions[1], m);
                 }
             }
         });
@@ -96,6 +98,7 @@ public class Main extends Application {
         for(int i = 0; i < arr.length; i++){
             for(int j = 0; j < arr[i].length; j++){
                 Rectangle p = arr[i][j];
+                System.out.print("Piece: " + p + " ");
 
                 if(p != null) {
                     p.setWidth(tileSize);
@@ -112,6 +115,8 @@ public class Main extends Application {
                 }
             }
         }
+
+        System.out.println();
     }
 
     public static void main(String[] args) {

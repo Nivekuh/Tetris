@@ -1,7 +1,7 @@
 package src;
 
 import java.lang.Math;
-import javafx.scene.shape.*;
+import javafx.scene.shape.Rectangle;
 
 public class Tetromino{
 	public static String[] Blocks = {"I", "J", "L", "O", "Z", "T", "S"};
@@ -11,6 +11,7 @@ public class Tetromino{
 
 	public Tetromino(){
 		String nextBlock = Blocks[(int)(Math.random()*7)];
+		pos = new Position(Board.getDimensions()[0]/2, 0);
 		components = new Rectangle[4];
 
 		components[0] = new Rectangle(0, 0, 0, 0);
@@ -53,11 +54,25 @@ public class Tetromino{
 		}
 	}
 
+	public Position[] getLocations(){
+		Position[] posArr = new Position[4];
+
+		for(int i = 0; i < components.length; i++)
+			posArr[i] = new Position((int)(components[i].getX() + pos.x), (int)(components[i].getY() + pos.y));
+
+		return posArr;
+	}
+
 	public void rotate(){
 		for(Rectangle component : components){
 			double x = component.getX();
 			component.setX(component.getY());
 			component.setY(-x);
 		}
+	}
+
+	public void move(int x, int y){ //Relative
+		pos.x += x;
+		pos.y += y;
 	}
 }

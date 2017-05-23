@@ -1,11 +1,12 @@
 package src;
 
+import javafx.geometry.Pos;
 import javafx.scene.shape.Rectangle;
-import org.w3c.dom.css.Rect;
-
-import java.awt.*;
 import java.util.ArrayList;
-import javafx.scene.shape.*;
+import java.util.Timer;
+import java.util.TimerTask;
+import javafx.application.Platform;
+
 
 public class Board
 {
@@ -14,11 +15,31 @@ public class Board
 	public Rectangle[][] board; /*Row, Column*/
 	private ArrayList<Tetromino> queue;
 	private Tetromino currentPiece;
+	private Main main;
+	static int x = 10;
+	static int y = 24;
 
-	public Board(int x, int y /*Dimensions*/){
+	int level = 1;
+	int linesCleared = 0;
+
+	public static int[] getDimensions() {
+		return new int[]{x, y};
+	}
+
+	public static long getDelay(int level) {
+		return 1500/level;
+	}
+
+	public Board(int x, int y /*Dimensions*/, Main m){
+		main = m;
 		board = new Rectangle[y][x];
 		queue = new ArrayList<Tetromino>();
 		populateQueue();
+		init();
+	}
+
+	public void init() {
+		gameLoop();
 	}
 
 	public void populateQueue(){
@@ -26,7 +47,23 @@ public class Board
 			queue.add(new Tetromino());
 	}
 
-	public void cycle(){
+	public void gameLoop() {
+		drop();
+		//level= level+1;
+
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+			public void run() {
+				Platform.runLater(new Runnable() {
+					public void run() {
+						gameLoop();
+					}
+				});
+			}
+		}, getDelay(level));
+	}
+
+	public void drop(){
 		//If currentPiece = nil, add a piece to the board from top of queue, populateQueue();
 		//Else drop piece down (Check if can move down)
 		//Add components of currentPiece to copy of board array
@@ -39,9 +76,9 @@ public class Board
 		else
 		{
 			boolean canDrop = true;
-			for(Rectangle component : currentPiece.components)
+			for(Position pos : currentPiece.getLocations())
 			{
-				if(board[(int)(currentPiece.pos.y + component.getY() + 1)][(int)(currentPiece.pos.x + component.getX())] != null){
+				if(pos.x >= 0 && pos.y >= -1 && y < board.length-1 && board[y + 1][x] != null){
 					canDrop = false;
 					break;
 				}
@@ -50,22 +87,27 @@ public class Board
 			if (canDrop)
 			{
 				Rectangle[][] boardC = new Rectangle[board.length][board[0].length];
-				for (int i = 0; i < board.length; i++)
-				{
-					for (int j = 0; j < board[i].length; j++)
-						boardC[i][j] = board[i][j];
+				System.arraycopy(board, 0, boardC, 0, board.length);
+
+				for(Rectangle component : currentPiece.components) {
+					int x = (int) (currentPiece.pos.x + component.getX());
+					int y = (int) (currentPiece.pos.y + component.getY());
+
+					if(x >= 0 && y >= -1) {
+						boardC[y + 1][x] = component;
+					}
 				}
+				currentPiece.move(0,1);
 
-				for(Rectangle component : currentPiece.components)
-					boardC[(int)(currentPiece.pos.y + component.getY() + 1)][(int)(currentPiece.pos.x + component.getX())] = component;
-
-				//Main.updateDisplay(boardC);
+				main.updateDisplay(boardC);
 			}
 			else
 			{
-				for(Rectangle component : currentPiece.components){
+				for(Rectangle component : currentPiece.components)
 					board[(int)(currentPiece.pos.y + component.getY() + 1)][(int)(currentPiece.pos.x + component.getX())] = component;
-				}
+				currentPiece = null;
+
+				main.updateDisplay(board);
 			}
 		}
 
