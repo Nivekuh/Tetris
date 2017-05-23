@@ -11,7 +11,7 @@ public class Board
 {
 	static int queueLen = 5;
 
-	private Rectangle[][] board; /*Row, Column*/
+	public Rectangle[][] board; /*Row, Column*/
 	private ArrayList<Tetromino> queue;
 	private Tetromino currentPiece;
 
