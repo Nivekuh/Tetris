@@ -29,6 +29,8 @@ public class Main extends Application {
         root.getChildren().add(board);
         stage.show();
 
+        Controller.init();
+
         setUpEventHandlers();
     }
 
