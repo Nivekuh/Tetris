@@ -26,7 +26,7 @@ public class Controller {
 
     public static void gameLoop()
     {
-        cycle();
+        board.cycle();
         level= level+1;
 
         Timer timer = new Timer();
