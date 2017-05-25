@@ -57,8 +57,10 @@ public class Tetromino{
 	public Position[] getLocations(){
 		Position[] posArr = new Position[4];
 
-		for(int i = 0; i < components.length; i++)
-			posArr[i] = new Position((int)(components[i].getX() + pos.x), (int)(components[i].getY() + pos.y));
+		for(int i = 0; i < components.length; i++) {
+			posArr[i] = new Position((int) (components[i].getX() + pos.x), (int) (components[i].getY() + pos.y));
+			//System.out.println("x: " + posArr[i].x + ", y: " + posArr[i].y);
+		}
 
 		return posArr;
 	}
@@ -69,6 +71,19 @@ public class Tetromino{
 			component.setX(component.getY());
 			component.setY(-x);
 		}
+	}
+
+	public Rectangle[][] addToArray(Rectangle[][] board){
+		for(Rectangle component : components) {
+			int x = (int) (pos.x + component.getX());
+			int y = (int) (pos.y + component.getY());
+
+			if(x >= 0 && y >= 0) {
+				board[y][x] = component;
+			}
+		}
+
+		return board;
 	}
 
 	public void move(int x, int y){ //Relative

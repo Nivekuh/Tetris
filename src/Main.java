@@ -1,8 +1,11 @@
 package src;
 
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.*;
 import javafx.scene.*;
 import javafx.scene.shape.*;
@@ -11,6 +14,8 @@ import javafx.scene.input.*;
 import javafx.scene.paint.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+
+import java.awt.*;
 
 public class Main extends Application {
     final int tileSize = 20;
@@ -92,7 +97,14 @@ public class Main extends Application {
         gameState = 1;
     }
 
+    public void clearBoard(){
+        ObservableList<Node> children = boardGrid.getChildren();
+        for(int i = 0; i < children.size(); i++)
+            children.remove(i);
+    }
+
     public void updateDisplay(Rectangle[][] arr){
+        //clearBoard();
         boardGrid.getChildren().clear();
 
         for(int i = 0; i < arr.length; i++){
@@ -101,11 +113,7 @@ public class Main extends Application {
                 System.out.print("Piece: " + p + " ");
 
                 if(p != null) {
-                    p.setWidth(tileSize);
-                    p.setHeight(tileSize);
-                    p.setX(0);
-                    p.setY(0);
-                    boardGrid.add(p, j, i);
+                    boardGrid.add(new Rectangle(0, 0, tileSize, tileSize), j, i);
                 }
                 else{
                     final Region grid = new Region();

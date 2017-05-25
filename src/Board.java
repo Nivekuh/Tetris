@@ -70,7 +70,9 @@ public class Board
 		//Send board array to the main to render it
 		if (currentPiece == null)
 		{
+			System.out.println("New Piece");
 			currentPiece = queue.get(0);
+			queue.remove(0);
 			populateQueue();
 		}
 		else
@@ -78,7 +80,7 @@ public class Board
 			boolean canDrop = true;
 			for(Position pos : currentPiece.getLocations())
 			{
-				if(pos.x >= 0 && pos.y >= -1 && y < board.length-1 && board[y + 1][x] != null){
+				if(!(pos.y < board.length-1 && board[pos.y + 1][pos.x] == null)){
 					canDrop = false;
 					break;
 				}
@@ -87,29 +89,23 @@ public class Board
 			if (canDrop)
 			{
 				Rectangle[][] boardC = new Rectangle[board.length][board[0].length];
-				System.arraycopy(board, 0, boardC, 0, board.length);
-
-				for(Rectangle component : currentPiece.components) {
-					int x = (int) (currentPiece.pos.x + component.getX());
-					int y = (int) (currentPiece.pos.y + component.getY());
-
-					if(x >= 0 && y >= -1) {
-						boardC[y + 1][x] = component;
-					}
+				for(int i = 0; i < board.length; i++){
+					for(int j = 0; j < board[i].length; j++)
+						boardC[i][j] = board[i][j];
 				}
-				currentPiece.move(0,1);
+
+				currentPiece.move(0, 1);
+				boardC = currentPiece.addToArray(boardC);
 
 				main.updateDisplay(boardC);
 			}
 			else
 			{
-				for(Rectangle component : currentPiece.components)
-					board[(int)(currentPiece.pos.y + component.getY() + 1)][(int)(currentPiece.pos.x + component.getX())] = component;
+				board = currentPiece.addToArray(board);
 				currentPiece = null;
 
 				main.updateDisplay(board);
 			}
 		}
-
 	}
 }
