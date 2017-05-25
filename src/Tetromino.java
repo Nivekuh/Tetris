@@ -65,15 +65,7 @@ public class Tetromino{
 		return posArr;
 	}
 
-	public void rotate(){
-		for(Rectangle component : components){
-			double x = component.getX();
-			component.setX(component.getY());
-			component.setY(-x);
-		}
-	}
-
-	public Rectangle[][] addToArray(Rectangle[][] board){
+	public void addToArray(Rectangle[][] board){
 		for(Rectangle component : components) {
 			int x = (int) (pos.x + component.getX());
 			int y = (int) (pos.y + component.getY());
@@ -82,12 +74,34 @@ public class Tetromino{
 				board[y][x] = component;
 			}
 		}
+	}
 
-		return board;
+	public void putInBounds(){
+		int maxX = pos.x;
+		int maxY = pos.y;
+		int minX = pos.x;
+		int minY = pos.y;
+
+		for(Position pos : getLocations()){
+			maxX = Math.max(maxX, pos.x);
+			maxY = Math.max(maxY, pos.y);
+			minX = Math.min(minX, pos.x);
+			minY = Math.min(minY, pos.y);
+		}
+
+
 	}
 
 	public void move(int x, int y){ //Relative
-		pos.x += x;
-		pos.y += y;
+		pos.x = Math.min(Math.max(0, pos.x+x), Board.getDimensions()[0]-1);
+		pos.y = Math.min(Math.max(0, pos.y+y), Board.getDimensions()[1]-1);
+	}
+
+	public void rotate(){
+		for(Rectangle component : components){
+			double x = component.getX();
+			component.setX(component.getY());
+			component.setY(-x);
+		}
 	}
 }

@@ -53,6 +53,20 @@ public class Main extends Application {
         stage.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent event) {
                 System.out.println("Key Pressed: " + event.getCode());
+                if(gameState == 1){
+                    if(event.getCode().equals(KeyCode.LEFT))
+                        board.currentPiece.move(-1, 0);
+                    else if(event.getCode().equals(KeyCode.RIGHT))
+                        board.currentPiece.move(1, 0);
+                    else if(event.getCode().equals(KeyCode.DOWN))
+                        board.currentPiece.move(0, 1);
+                    else if(event.getCode().equals(KeyCode.Z))
+                        board.currentPiece.rotate();
+                    else if(event.getCode().equals(KeyCode.X))
+                        board.currentPiece.rotate();
+
+                    board.setDisplay();
+                }
             }
         });
 
@@ -97,14 +111,7 @@ public class Main extends Application {
         gameState = 1;
     }
 
-    public void clearBoard(){
-        ObservableList<Node> children = boardGrid.getChildren();
-        for(int i = 0; i < children.size(); i++)
-            children.remove(i);
-    }
-
     public void updateDisplay(Rectangle[][] arr){
-        //clearBoard();
         boardGrid.getChildren().clear();
 
         for(int i = 0; i < arr.length; i++){
