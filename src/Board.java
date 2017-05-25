@@ -102,9 +102,28 @@ public class Board
 			else
 			{
 				board = currentPiece.addToArray(board);
+				checkLines(currentPiece.getLocations());
 				currentPiece = null;
 
 				main.updateDisplay(board);
+			}
+		}
+	}
+
+	public void checkLines(Position[] posArr){
+		for(Position pos : posArr){
+			int check = 0;
+			for(Rectangle rect : board[pos.y]){
+				if(rect != null)
+					check++;
+			}
+
+			if(check == x) {
+				for(int i = pos.y; i > 0; i--){
+					for(int j = 0; j < board[i].length; j++){
+						board[i][j] = board[i-1][j];
+					}
+				}
 			}
 		}
 	}
