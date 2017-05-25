@@ -73,6 +73,7 @@ public class Board
 			System.out.println("New Piece");
 			currentPiece = queue.get(0);
 			queue.remove(0);
+			currentPiece.move(0, -1);
 			populateQueue();
 		}
 		else
@@ -88,26 +89,27 @@ public class Board
 
 			if (canDrop)
 			{
-				Rectangle[][] boardC = new Rectangle[board.length][board[0].length];
-				for(int i = 0; i < board.length; i++){
-					for(int j = 0; j < board[i].length; j++)
-						boardC[i][j] = board[i][j];
-				}
-
 				currentPiece.move(0, 1);
-				boardC = currentPiece.addToArray(boardC);
-
-				main.updateDisplay(boardC);
+				setDisplay();
 			}
 			else
 			{
-				board = currentPiece.addToArray(board);
+				setDisplay();
 				checkLines(currentPiece.getLocations());
 				currentPiece = null;
-
-				main.updateDisplay(board);
 			}
 		}
+	}
+
+	public void setDisplay(){
+		Rectangle[][] boardC = new Rectangle[board.length][board[0].length];
+		for(int i = 0; i < board.length; i++){
+			for(int j = 0; j < board[i].length; j++)
+				boardC[i][j] = board[i][j];
+		}
+
+		currentPiece.addToArray(boardC);
+		main.updateDisplay(boardC);
 	}
 
 	public void checkLines(Position[] posArr){
