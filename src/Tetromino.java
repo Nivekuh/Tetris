@@ -76,20 +76,22 @@ public class Tetromino{
 		}
 	}
 
-	public void putInBounds(){
-		int maxX = pos.x;
-		int maxY = pos.y;
-		int minX = pos.x;
-		int minY = pos.y;
+	public void putInBounds(Rectangle[][] arr){
+		boolean inBounds = false;
 
-		for(Position pos : getLocations()){
-			maxX = Math.max(maxX, pos.x);
-			maxY = Math.max(maxY, pos.y);
-			minX = Math.min(minX, pos.x);
-			minY = Math.min(minY, pos.y);
+		while(!inBounds){
+			inBounds = true;
+			for(Rectangle component : components){
+				int x = (int)(pos.x + component.getX());
+				int y = (int)(pos.y + component.getY());
+
+				if(!(x >= 0 && y >= 0 && y < arr.length && x < arr[0].length)){
+					inBounds = false;
+					move((x > 0 ? arr[0].length : 0) - x, (y > 0 ? arr.length : 0) - y);
+					break;
+				}
+			}
 		}
-
-
 	}
 
 	public void move(int x, int y){ //Relative
