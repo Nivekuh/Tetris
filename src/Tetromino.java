@@ -94,6 +94,18 @@ public class Tetromino{
 		}
 	}
 
+	public boolean canMoveToPosition(Rectangle [][] brd, Position p){
+		for(Rectangle component : components){
+			int x = (int)(p.x + component.getX());
+			int y = (int)(p.y + component.getY());
+
+			if(!(x >= 0 && x < brd[0].length && y >= 0 && y < brd.length) || brd[y][x] != null)
+				return  false;
+		}
+
+		return true;
+	}
+
 	public void move(int x, int y){ //Relative
 		pos.x += x;
 		pos.y += y;

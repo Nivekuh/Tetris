@@ -80,7 +80,7 @@ public class Board
 		int roundLinesCleared = drop();
 		linesCleared += roundLinesCleared;
 		score += getScore(roundLinesCleared, level, streak);
-		if(linesCleared % 20 == 0)
+		if(linesCleared > 0 && linesCleared % 20 == 0)
 			level++;
 
 		Timer timer = new Timer();

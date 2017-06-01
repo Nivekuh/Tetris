@@ -56,26 +56,25 @@ public class Main extends Application {
             public void handle(KeyEvent event) {
                 System.out.println("Key Pressed: " + event.getCode());
                 if(gameState == 1){
+                    int tX = 0;
+                    int tY = 0;
+
                     if(event.getCode().equals(KeyCode.LEFT))
-                        board.currentPiece.move(-1, 0);
+                        tX = -1;
                     else if(event.getCode().equals(KeyCode.RIGHT))
-                        board.currentPiece.move(1, 0);
+                        tX = 1;
                     else if(event.getCode().equals(KeyCode.DOWN))
-                        board.currentPiece.move(0, 1);
+                        tY = 1;
                     else if(event.getCode().equals(KeyCode.Z))
                         board.currentPiece.rotate();
                     else if(event.getCode().equals(KeyCode.X))
                         board.currentPiece.rotate();
 
+                    if(board.currentPiece.canMoveToPosition(board.board, new Position(tX + board.currentPiece.pos.x, tY + board.currentPiece.pos.y)))
+                        board.currentPiece.move(tX, tY);
                     board.currentPiece.putInBounds(board.board);
                     board.setDisplay();
                 }
-            }
-        });
-
-        stage.getScene().setOnMouseReleased(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                System.out.println("Mouse clicked: " + event.getPickResult());
             }
         });
 
