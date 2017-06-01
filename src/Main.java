@@ -16,6 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Main extends Application {
     final int tileSize = 20;
@@ -26,6 +27,7 @@ public class Main extends Application {
     private Group root;
     //Board
     private GridPane boardGrid;
+    private GridPane queueGrid;
     private Board board;
     //Menu
     private Button start;
@@ -39,7 +41,7 @@ public class Main extends Application {
         root.getStyleClass().add("base");
         stage = primaryStage;
         stage.setTitle("Tetris");
-        stage.setScene(new Scene(root, tileSize*dimensions[0], tileSize*dimensions[1]));
+        stage.setScene(new Scene(root, (tileSize+1)*(dimensions[0]+3), (tileSize+1)*dimensions[1]));
         stage.getScene().getStylesheets().add("src/style.css");
         stage.show();
 
@@ -65,6 +67,7 @@ public class Main extends Application {
                     else if(event.getCode().equals(KeyCode.X))
                         board.currentPiece.rotate();
 
+                    board.currentPiece.putInBounds(board.board);
                     board.setDisplay();
                 }
             }
@@ -98,20 +101,41 @@ public class Main extends Application {
 
     public void setupGameBoard(){
         boardGrid = new GridPane();
+        queueGrid = new GridPane();
+        queueGrid.getStyleClass().add("queue");
         boardGrid.getStyleClass().add("board");
+        boardGrid.setLayoutX(boardGrid.getWidth());
         root.getChildren().add(boardGrid);
+        root.getChildren().add(queueGrid);
 
         for (int k = 0; k < dimensions[0]; k++) {
             ColumnConstraints cc = new ColumnConstraints();
             cc.setPercentWidth(100.0/dimensions[0]);
             boardGrid.getColumnConstraints().add(cc);
+            queueGrid.getColumnConstraints().add(cc);
         }
 
-        updateDisplay(new Rectangle[dimensions[1]][dimensions[0]]);
+        updateDisplay(new Rectangle[dimensions[1]][dimensions[0]], new ArrayList<Tetromino>());
         gameState = 1;
     }
 
-    public void updateDisplay(Rectangle[][] arr){
+    public GridPane queueRegion(Tetromino piece){
+        GridPane region = new GridPane();
+
+        for(int i = 0; i < 3; i++){
+            ColumnConstraints cc = new ColumnConstraints();
+            cc.setPercentWidth(100.0/dimensions[0]);
+            region.getColumnConstraints().add(cc);
+        }
+
+        /*piece.putInBounds(new Rectangle[4][3]);
+        for(Rectangle component : piece.components)
+            region.add(component, (int)component.getX(), (int)component.getY());*/
+
+        return region;
+    }
+
+    public void updateDisplay(Rectangle[][] arr, ArrayList<Tetromino> queue){
         boardGrid.getChildren().clear();
 
         for(int i = 0; i < arr.length; i++){
@@ -130,6 +154,9 @@ public class Main extends Application {
                 }
             }
         }
+
+        for(int i = 0; i < queue.size(); i++)
+            queueGrid.add(queueRegion(queue.get(i)), 0, i);
 
         System.out.println();
     }

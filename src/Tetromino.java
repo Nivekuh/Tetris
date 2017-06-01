@@ -70,9 +70,8 @@ public class Tetromino{
 			int x = (int) (pos.x + component.getX());
 			int y = (int) (pos.y + component.getY());
 
-			if(x >= 0 && y >= 0) {
+			if(x >= 0 && y >= 0 && y < board.length && x < board[0].length)
 				board[y][x] = component;
-			}
 		}
 	}
 
@@ -81,13 +80,14 @@ public class Tetromino{
 
 		while(!inBounds){
 			inBounds = true;
+
 			for(Rectangle component : components){
 				int x = (int)(pos.x + component.getX());
 				int y = (int)(pos.y + component.getY());
 
 				if(!(x >= 0 && y >= 0 && y < arr.length && x < arr[0].length)){
 					inBounds = false;
-					move((x > 0 ? arr[0].length : 0) - x, (y > 0 ? arr.length : 0) - y);
+					move(((x >= 0 && x < arr[0].length) ? 0 : 1)*((x > 0 ? arr[0].length-1 : 0) - x), ((y >= 0 && y < arr.length) ? 0 : 1)*((y > 0 ? arr.length-1 : 0) - y));
 					break;
 				}
 			}
@@ -95,8 +95,10 @@ public class Tetromino{
 	}
 
 	public void move(int x, int y){ //Relative
-		pos.x = Math.min(Math.max(0, pos.x+x), Board.getDimensions()[0]-1);
-		pos.y = Math.min(Math.max(0, pos.y+y), Board.getDimensions()[1]-1);
+		pos.x += x;
+		pos.y += y;
+
+		System.out.println("Moved to: x = " + pos.x + " y = " + pos.y);
 	}
 
 	public void rotate(){

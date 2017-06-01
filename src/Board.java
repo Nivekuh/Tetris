@@ -14,7 +14,7 @@ public class Board
 
 	public Rectangle[][] board; /*Row, Column*/
 	private ArrayList<Tetromino> queue;
-	private Tetromino currentPiece;
+	public Tetromino currentPiece;
 	private Main main;
 	static int x = 10;
 	static int y = 24;
@@ -76,28 +76,27 @@ public class Board
 			currentPiece.move(0, -1);
 			populateQueue();
 		}
+
+		boolean canDrop = true;
+		for(Position pos : currentPiece.getLocations())
+		{
+			if(!(pos.y < board.length-1 && board[pos.y + 1][pos.x] == null)){
+				canDrop = false;
+				break;
+			}
+		}
+
+		if (canDrop)
+		{
+			currentPiece.move(0, 1);
+			setDisplay();
+		}
 		else
 		{
-			boolean canDrop = true;
-			for(Position pos : currentPiece.getLocations())
-			{
-				if(!(pos.y < board.length-1 && board[pos.y + 1][pos.x] == null)){
-					canDrop = false;
-					break;
-				}
-			}
-
-			if (canDrop)
-			{
-				currentPiece.move(0, 1);
-				setDisplay();
-			}
-			else
-			{
-				setDisplay();
-				checkLines(currentPiece.getLocations());
-				currentPiece = null;
-			}
+			currentPiece.addToArray(board);
+			setDisplay();
+			checkLines(currentPiece.getLocations());
+			currentPiece = null;
 		}
 	}
 
@@ -109,7 +108,7 @@ public class Board
 		}
 
 		currentPiece.addToArray(boardC);
-		main.updateDisplay(boardC);
+		main.updateDisplay(boardC, queue);
 	}
 
 	public void checkLines(Position[] posArr){

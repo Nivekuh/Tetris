@@ -8,6 +8,12 @@
     -fx-vgap: 1;
 }
 
+.queue{
+    -fx-background-color: ghostwhite;
+    -fx-hgap: 1;
+    -fx-vgap: 1;
+}
+
 .button{
     -fx-background-color: ghostwhite;
 }
