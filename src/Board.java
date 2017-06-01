@@ -19,8 +19,10 @@ public class Board
 	static int x = 10;
 	static int y = 24;
 
-	int level = 1;
+	int level = 0;
+	int score = 0;
 	int linesCleared = 0;
+	int streak = 0;
 
 	public static int[] getDimensions() {
 		return new int[]{x, y};
@@ -47,9 +49,39 @@ public class Board
 			queue.add(new Tetromino());
 	}
 
+	public int getScore(int linesCleared, int level, int streak)
+	{
+		int score = 0;
+		if(linesCleared == 1)
+		{
+			score += 50 * (level + 1);
+			streak = 0;
+		}
+		if(linesCleared == 2)
+		{
+			score += 150 * (level +1);
+			streak = 0;
+		}
+		if(linesCleared == 3)
+		{
+			score += 350 * (level +1);
+			streak = 0;
+		}
+		if(linesCleared == 4)
+		{
+			score += 1000 * (level + 1) + (streak * 4000 * (level + 1));
+			streak++;
+		}
+
+		return score;
+	}
+
 	public void gameLoop() {
-		drop();
-		//level= level+1;
+		int roundLinesCleared = drop();
+		linesCleared += roundLinesCleared;
+		score += getScore(roundLinesCleared, level, streak);
+		if(linesCleared % 20 == 0)
+			level++;
 
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
@@ -63,11 +95,13 @@ public class Board
 		}, getDelay(level));
 	}
 
-	public void drop(){
+	public int drop(){
 		//If currentPiece = nil, add a piece to the board from top of queue, populateQueue();
 		//Else drop piece down (Check if can move down)
 		//Add components of currentPiece to copy of board array
 		//Send board array to the main to render it
+		int roundLinesCleared = 0;
+
 		if (currentPiece == null)
 		{
 			System.out.println("New Piece");
@@ -95,9 +129,11 @@ public class Board
 		{
 			currentPiece.addToArray(board);
 			setDisplay();
-			checkLines(currentPiece.getLocations());
+			roundLinesCleared = checkLines(currentPiece.getLocations());
 			currentPiece = null;
 		}
+
+		return roundLinesCleared;
 	}
 
 	public void setDisplay(){
@@ -111,7 +147,9 @@ public class Board
 		main.updateDisplay(boardC, queue);
 	}
 
-	public void checkLines(Position[] posArr){
+	public int checkLines(Position[] posArr){
+		int roundLinesCleared = 0;
+
 		for(Position pos : posArr){
 			int check = 0;
 			for(Rectangle rect : board[pos.y]){
@@ -125,7 +163,11 @@ public class Board
 						board[i][j] = board[i-1][j];
 					}
 				}
+				roundLinesCleared++;
 			}
 		}
+
+		return roundLinesCleared;
 	}
 }
+
