@@ -99,19 +99,26 @@ public class Main extends Application {
     }
 
     public void setupGameBoard(){
+        GridPane gameGrid = new GridPane();
         boardGrid = new GridPane();
         queueGrid = new GridPane();
+
         queueGrid.getStyleClass().add("queue");
         boardGrid.getStyleClass().add("board");
-        boardGrid.setLayoutX(boardGrid.getWidth());
-        root.getChildren().add(boardGrid);
-        root.getChildren().add(queueGrid);
+        gameGrid.add(boardGrid, 0, 0);
+        gameGrid.add(queueGrid, 1, 0);
+        root.getChildren().add(gameGrid);
 
         for (int k = 0; k < dimensions[0]; k++) {
             ColumnConstraints cc = new ColumnConstraints();
             cc.setPercentWidth(100.0/dimensions[0]);
             boardGrid.getColumnConstraints().add(cc);
-            queueGrid.getColumnConstraints().add(cc);
+        }
+
+        for(int k = 0; k < 3; k++){
+            ColumnConstraints _cc = new ColumnConstraints();
+            _cc.setPercentWidth(100.0/3);
+            queueGrid.getColumnConstraints().add(_cc);
         }
 
         updateDisplay(new Rectangle[dimensions[1]][dimensions[0]], new ArrayList<Tetromino>());
@@ -123,13 +130,13 @@ public class Main extends Application {
 
         for(int i = 0; i < 3; i++){
             ColumnConstraints cc = new ColumnConstraints();
-            cc.setPercentWidth(100.0/dimensions[0]);
+            cc.setPercentWidth(100.0/3);
             region.getColumnConstraints().add(cc);
         }
 
-        /*piece.putInBounds(new Rectangle[4][3]);
+        piece.putInBounds(new Rectangle[4][3]);
         for(Rectangle component : piece.components)
-            region.add(component, (int)component.getX(), (int)component.getY());*/
+            region.add(component, (int)component.getX()+piece.pos.x, (int)component.getY()+piece.pos.y);
 
         return region;
     }

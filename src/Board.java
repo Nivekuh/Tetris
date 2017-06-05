@@ -19,7 +19,7 @@ public class Board
 	static int x = 10;
 	static int y = 24;
 
-	int level = 0;
+	int level = 1;
 	int score = 0;
 	int linesCleared = 0;
 	int streak = 0;
@@ -96,10 +96,6 @@ public class Board
 	}
 
 	public int drop(){
-		//If currentPiece = nil, add a piece to the board from top of queue, populateQueue();
-		//Else drop piece down (Check if can move down)
-		//Add components of currentPiece to copy of board array
-		//Send board array to the main to render it
 		int roundLinesCleared = 0;
 
 		if (currentPiece == null)
@@ -107,7 +103,6 @@ public class Board
 			System.out.println("New Piece");
 			currentPiece = queue.get(0);
 			queue.remove(0);
-			currentPiece.move(0, -1);
 			populateQueue();
 		}
 
