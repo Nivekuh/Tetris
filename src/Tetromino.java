@@ -48,8 +48,8 @@ public class Tetromino{
 				break;
 			case "O":
 				components[1] = new Rectangle(1, 0, 0, 0);
-				components[2] = new Rectangle(2, 1, 0, 0);
-				components[3] = new Rectangle(2, 0, 0, 0);
+				components[2] = new Rectangle(1, 1, 0, 0);
+				components[3] = new Rectangle(0, 1, 0, 0);
 				components[0].setFill(Color.YELLOW);
 				components[1].setFill(Color.YELLOW);
 				components[2].setFill(Color.YELLOW);
