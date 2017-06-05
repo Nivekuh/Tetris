@@ -1,6 +1,9 @@
 package src;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Rectangle;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -18,6 +21,7 @@ public class Board
 	private Main main;
 	static int x = 10;
 	static int y = 24;
+	boolean isPaused = false;
 
 	int level = 1;
 	int score = 0;
@@ -77,11 +81,13 @@ public class Board
 	}
 
 	public void gameLoop() {
-		int roundLinesCleared = drop();
-		linesCleared += roundLinesCleared;
-		score += getScore(roundLinesCleared, level, streak);
-		if(linesCleared > 0 && linesCleared % 20 == 0)
-			level++;
+		if(!isPaused) {
+			int roundLinesCleared = drop();
+			linesCleared += roundLinesCleared;
+			score += getScore(roundLinesCleared, level, streak);
+			if (linesCleared > 0 && linesCleared % 20 == 0)
+				level++;
+		}
 
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
@@ -93,6 +99,14 @@ public class Board
 				});
 			}
 		}, getDelay(level));
+	}
+
+	public void pause()
+	{
+		if(!isPaused)
+			isPaused = true;
+		else
+			isPaused = false;
 	}
 
 	public int drop(){
