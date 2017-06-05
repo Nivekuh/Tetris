@@ -2,14 +2,24 @@
 
 }
 
+.root {
+    cell-color: ghostwhite;
+    cell-border-color: white;
+}
+
 .board{
-    -fx-background-color: ghostwhite;
+    -fx-background-insets: 10;
+    -fx-background-color: cell-color;
     -fx-hgap: 1;
     -fx-vgap: 1;
 }
 
+.sidebar{
+    -fx-background-color: cell-color;
+    -fx-vgap: 5;
+}
+
 .queue{
-    -fx-background-color: ghostwhite;
     -fx-hgap: 1;
     -fx-vgap: 1;
 }

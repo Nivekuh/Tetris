@@ -1,5 +1,6 @@
 package src;
 
+import com.sun.javafx.font.directwrite.RECT;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -65,9 +66,9 @@ public class Main extends Application {
                         tX = 1;
                     else if(event.getCode().equals(KeyCode.DOWN))
                         tY = 1;
-                    else if(event.getCode().equals(KeyCode.Z))
+                    else if(event.getCode().equals(KeyCode.Z) && board.currentPiece.canRotate(board.board, board.currentPiece.pos))
                         board.currentPiece.rotate();
-                    else if(event.getCode().equals(KeyCode.X))
+                    else if(event.getCode().equals(KeyCode.X) && board.currentPiece.canRotate(board.board, board.currentPiece.pos))
                         board.currentPiece.rotate();
 
                     if(board.currentPiece.canMoveToPosition(board.board, new Position(tX + board.currentPiece.pos.x, tY + board.currentPiece.pos.y)))
@@ -100,13 +101,15 @@ public class Main extends Application {
 
     public void setupGameBoard(){
         GridPane gameGrid = new GridPane();
+        GridPane sidebarGrid = new GridPane();
         boardGrid = new GridPane();
         queueGrid = new GridPane();
 
-        queueGrid.getStyleClass().add("queue");
+        sidebarGrid.getStyleClass().add("sidebar");
         boardGrid.getStyleClass().add("board");
+        sidebarGrid.add(queueGrid, 1, 1);
         gameGrid.add(boardGrid, 0, 0);
-        gameGrid.add(queueGrid, 1, 0);
+        gameGrid.add(sidebarGrid, 1, 0);
         root.getChildren().add(gameGrid);
 
         for (int k = 0; k < dimensions[0]; k++) {
@@ -115,18 +118,32 @@ public class Main extends Application {
             boardGrid.getColumnConstraints().add(cc);
         }
 
-        for(int k = 0; k < 3; k++){
-            ColumnConstraints _cc = new ColumnConstraints();
-            _cc.setPercentWidth(100.0/3);
-            queueGrid.getColumnConstraints().add(_cc);
-        }
-
-        updateDisplay(new Rectangle[dimensions[1]][dimensions[0]], new ArrayList<Tetromino>());
         gameState = 1;
+    }
+
+    public void updateGridPane(GridPane gridPane, Rectangle[][] arr){
+        for(int i = 0; i < arr.length; i++){
+            for(int j = 0; j < arr[i].length; j++){
+                Rectangle p = arr[i][j];
+
+                if(p != null) {
+                    Rectangle t = new Rectangle(0, 0, tileSize, tileSize);
+                    t.setFill(p.getFill());
+                    gridPane.add(t, j, i);
+                }
+                else{
+                    final Region grid = new Region();
+                    grid.setPrefWidth(tileSize);
+                    grid.setPrefHeight(tileSize);
+                    gridPane.add(grid, j, i);
+                }
+            }
+        }
     }
 
     public GridPane queueRegion(Tetromino piece){
         GridPane region = new GridPane();
+        region.getStyleClass().add("queue");
 
         for(int i = 0; i < 3; i++){
             ColumnConstraints cc = new ColumnConstraints();
@@ -134,37 +151,22 @@ public class Main extends Application {
             region.getColumnConstraints().add(cc);
         }
 
-        piece.putInBounds(new Rectangle[4][3]);
-        for(Rectangle component : piece.components)
-            region.add(component, (int)component.getX()+piece.pos.x, (int)component.getY()+piece.pos.y);
+        Rectangle[][] arr = new Rectangle[4][3];
+        piece.putInBounds(arr);
+        piece.addToArray(arr);
+        updateGridPane(region, arr);
 
         return region;
     }
 
-    public void updateDisplay(Rectangle[][] arr, ArrayList<Tetromino> queue){
+    public void updateDisplay(Rectangle[][] arr, Board board){
+        ArrayList<Tetromino> queue = board.queue;
         boardGrid.getChildren().clear();
+        queueGrid.getChildren().clear();
 
-        for(int i = 0; i < arr.length; i++){
-            for(int j = 0; j < arr[i].length; j++){
-                Rectangle p = arr[i][j];
-                System.out.print("Piece: " + p + " ");
-
-                if(p != null) {
-                    boardGrid.add(new Rectangle(0, 0, tileSize, tileSize), j, i);
-                }
-                else{
-                    final Region grid = new Region();
-                    grid.setPrefWidth(tileSize);
-                    grid.setPrefHeight(tileSize);
-                    boardGrid.add(grid, j, i);
-                }
-            }
-        }
-
+        updateGridPane(boardGrid, arr);
         for(int i = 0; i < queue.size(); i++)
             queueGrid.add(queueRegion(queue.get(i)), 0, i);
-
-        System.out.println();
     }
 
     public static void main(String[] args) {

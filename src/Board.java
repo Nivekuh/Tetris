@@ -13,7 +13,7 @@ public class Board
 	static int queueLen = 5;
 
 	public Rectangle[][] board; /*Row, Column*/
-	private ArrayList<Tetromino> queue;
+	public ArrayList<Tetromino> queue;
 	public Tetromino currentPiece;
 	private Main main;
 	static int x = 10;
@@ -139,7 +139,7 @@ public class Board
 		}
 
 		currentPiece.addToArray(boardC);
-		main.updateDisplay(boardC, queue);
+		main.updateDisplay(boardC, this);
 	}
 
 	public int checkLines(Position[] posArr){
