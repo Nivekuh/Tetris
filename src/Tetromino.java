@@ -151,4 +151,16 @@ public class Tetromino{
 			component.setY(-x);
 		}
 	}
+
+	public boolean canRotate(Rectangle[][] brd, Position p){
+		for (Rectangle component : components){
+			int x = (int)(p.x + component.getX());
+			int y = (int)(p.y + component.getY());
+				if(y >= 0 && y < brd[0].length && -x >= 0 && -x < brd.length) {
+					if (brd[-x][y] != null)
+							return false;
+				}
+			}
+		return true;
+	}
 }
