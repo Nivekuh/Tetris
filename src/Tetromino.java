@@ -1,6 +1,8 @@
 package src;
 
 import java.lang.Math;
+
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Tetromino{
@@ -20,36 +22,65 @@ public class Tetromino{
 				components[1] = new Rectangle(0, 1, 0, 0);
 				components[2] = new Rectangle(0, 2, 0, 0);
 				components[3] = new Rectangle(0, 3, 0, 0);
+				components[0].setFill(Color.TEAL);
+				components[1].setFill(Color.TEAL);
+				components[2].setFill(Color.TEAL);
+				components[3].setFill(Color.TEAL);
+
 				break;
 			case "J":
 				components[1] = new Rectangle(-1, 0, 0, 0);
 				components[2] = new Rectangle(0, 1, 0, 0);
 				components[3] = new Rectangle(0, 2, 0, 0);
+				components[0].setFill(Color.ORANGE);
+				components[1].setFill(Color.ORANGE);
+				components[2].setFill(Color.ORANGE);
+				components[3].setFill(Color.ORANGE);
 				break;
 			case "L":
 				components[1] = new Rectangle(1, 0, 0, 0);
 				components[2] = new Rectangle(0, 1, 0, 0);
 				components[3] = new Rectangle(0, 2, 0, 0);
+				components[0].setFill(Color.BLUE);
+				components[1].setFill(Color.BLUE);
+				components[2].setFill(Color.BLUE);
+				components[3].setFill(Color.BLUE);
 				break;
 			case "O":
 				components[1] = new Rectangle(1, 0, 0, 0);
 				components[2] = new Rectangle(2, 1, 0, 0);
 				components[3] = new Rectangle(2, 0, 0, 0);
+				components[0].setFill(Color.YELLOW);
+				components[1].setFill(Color.YELLOW);
+				components[2].setFill(Color.YELLOW);
+				components[3].setFill(Color.YELLOW);
 				break;
 			case "Z":
 				components[1] = new Rectangle(-1, 1, 0, 0);
 				components[2] = new Rectangle(0, 1, 0, 0);
 				components[3] = new Rectangle(1, 0, 0, 0);
+				components[0].setFill(Color.RED);
+				components[1].setFill(Color.RED);
+				components[2].setFill(Color.RED);
+				components[3].setFill(Color.RED);
 				break;
 			case "T":
 				components[1] = new Rectangle(-1, 0, 0, 0);
 				components[2] = new Rectangle(0, -1, 0, 0);
 				components[3] = new Rectangle(1, 0, 0, 0);
+				components[0].setFill(Color.PURPLE);
+				components[1].setFill(Color.PURPLE);
+				components[2].setFill(Color.PURPLE);
+				components[3].setFill(Color.PURPLE);
 				break;
 			case "S":
 				components[1] = new Rectangle(-1, 0, 0, 0);
 				components[2] = new Rectangle(-1, -1, 0, 0);
 				components[3] = new Rectangle(1, 0, 0, 0);
+				components[0].setFill(Color.GREEN);
+				components[1].setFill(Color.GREEN);
+				components[2].setFill(Color.GREEN);
+				components[3].setFill(Color.GREEN);
 				break;
 		}
 	}
