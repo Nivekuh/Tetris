@@ -32,10 +32,11 @@ public class Main extends Application {
     private GridPane queueGrid;
     private GridPane scoreGrid;
     private Board board;
+    private Label label;
     //Menu
     private Button start;
 
-    private int gameState = 0; //Menu, Playing, Game Over/Paused
+    public int gameState = 0; //Menu, Playing, Game Over/Paused
 
     public void start(Stage primaryStage) throws Exception{
         dimensions = Board.getDimensions();
@@ -108,6 +109,10 @@ public class Main extends Application {
         boardGrid = new GridPane();
         queueGrid = new GridPane();
 
+        label = new Label("");
+        label.setLayoutX(stage.getScene().getWidth()/2);
+        label.setLayoutX(stage.getScene().getHeight()/2);
+
         queueGrid.getStyleClass().add("sidebar");
         scoreGrid.getStyleClass().add("sidebar");
         boardGrid.getStyleClass().add("board");
@@ -118,6 +123,7 @@ public class Main extends Application {
         gameGrid.add(boardGrid, 1, 0);
         gameGrid.add(sidebarGridR, 2, 0);
         root.getChildren().add(gameGrid);
+        root.getChildren().add(label);
 
         for (int k = 0; k < dimensions[0]; k++) {
             ColumnConstraints cc = new ColumnConstraints();
@@ -126,6 +132,11 @@ public class Main extends Application {
         }
 
         gameState = 1;
+    }
+
+    public void setGameOverlay(String text, int state){
+        gameState = state;
+        label.setText(text);
     }
 
     public void updateGridPane(GridPane gridPane, Rectangle[][] arr){
