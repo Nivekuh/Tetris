@@ -17,16 +17,17 @@ public class Tetromino{
 		pos = new Position(Board.getDimensions()[0]/2, 0);
 		components = new Rectangle[4];
 
+
 		components[0] = new Rectangle(0, 0, 0, 0);
 		switch (nextBlock){
 			case "I":
-				col = Color.TEAL;
+				col = Color.CYAN;
 				components[1] = new Rectangle(0, 1, 0, 0);
 				components[2] = new Rectangle(0, 2, 0, 0);
 				components[3] = new Rectangle(0, 3, 0, 0);
 				break;
 			case "J":
-				col = Color.ORANGE;
+				col = Color.DARKORANGE;
 				components[1] = new Rectangle(-1, 0, 0, 0);
 				components[2] = new Rectangle(0, 1, 0, 0);
 				components[3] = new Rectangle(0, 2, 0, 0);
@@ -38,33 +39,36 @@ public class Tetromino{
 				components[3] = new Rectangle(0, 2, 0, 0);
 				break;
 			case "O":
-				col = Color.YELLOW;
+				col = Color.GOLD;
 				components[1] = new Rectangle(1, 0, 0, 0);
 				components[2] = new Rectangle(1, 1, 0, 0);
 				components[3] = new Rectangle(0, 1, 0, 0);
 				break;
-			case "Z":
+			case "S":
 				col = Color.RED;
 				components[1] = new Rectangle(-1, 1, 0, 0);
 				components[2] = new Rectangle(0, 1, 0, 0);
 				components[3] = new Rectangle(1, 0, 0, 0);
 				break;
 			case "T":
-				col = Color.PURPLE;
+				col = Color.DARKORCHID;
 				components[1] = new Rectangle(-1, 0, 0, 0);
 				components[2] = new Rectangle(0, -1, 0, 0);
 				components[3] = new Rectangle(1, 0, 0, 0);
 				break;
-			case "S":
-				col = Color.GREEN;
-				components[1] = new Rectangle(-1, 0, 0, 0);
+			case "Z":
+				col = Color.LAWNGREEN;
+				components[1] = new Rectangle(0, -1, 0, 0);
 				components[2] = new Rectangle(-1, -1, 0, 0);
 				components[3] = new Rectangle(1, 0, 0, 0);
 				break;
 		}
 
-		for(Rectangle component : components)
+		for(Rectangle component : components){
 			component.setFill(col);
+			component.setStroke(Color.BLACK);
+			component.setStrokeWidth(10);
+		}
 	}
 
 	public Position[] getLocations(){
