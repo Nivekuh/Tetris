@@ -22,6 +22,7 @@ public class Board
 	static int x = 10;
 	static int y = 24;
 	boolean isPaused = false;
+	boolean gameOver = false;
 
 	int level = 1;
 	int score = 0;
@@ -81,7 +82,7 @@ public class Board
 	}
 
 	public void gameLoop() {
-		if(!isPaused) {
+		if(!isPaused && !gameOver) {
 			int roundLinesCleared = drop();
 			linesCleared += roundLinesCleared;
 			score += getScore(roundLinesCleared, level, streak);
@@ -103,10 +104,14 @@ public class Board
 
 	public void pause()
 	{
-		if(!isPaused)
+		if(!isPaused) {
 			isPaused = true;
-		else
+			main.setGameOverlay("Paused", 2);
+		}
+		else {
 			isPaused = false;
+			main.setGameOverlay("", 2);
+		}
 	}
 
 	public int drop(){
@@ -117,15 +122,24 @@ public class Board
 			System.out.println("New Piece");
 			currentPiece = queue.get(0);
 			currentPiece.pos.x = 5;
-			currentPiece.pos.y = 0;
+			currentPiece.pos.y = -2;
 			queue.remove(0);
 			populateQueue();
+
+			for(Position pos : currentPiece.getLocations())
+			{
+				if(pos.y > -1 && pos.y < board.length && board[pos.y][pos.x] != null){
+					gameOver = true;
+					main.setGameOverlay("Game Over", 2);
+					break;
+				}
+			}
 		}
 
 		boolean canDrop = true;
 		for(Position pos : currentPiece.getLocations())
 		{
-			if(!(pos.y < board.length-1 && board[pos.y + 1][pos.x] == null)){
+			if(pos.y > -1 && !(pos.y < board.length-1 && board[pos.y + 1][pos.x] == null)){
 				canDrop = false;
 				break;
 			}
