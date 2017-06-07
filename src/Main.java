@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.*;
@@ -29,6 +30,7 @@ public class Main extends Application {
     //Board
     private GridPane boardGrid;
     private GridPane queueGrid;
+    private GridPane scoreGrid;
     private Board board;
     //Menu
     private Button start;
@@ -42,7 +44,7 @@ public class Main extends Application {
         root.getStyleClass().add("base");
         stage = primaryStage;
         stage.setTitle("Tetris");
-        stage.setScene(new Scene(root, (tileSize+1)*(dimensions[0]+3), (tileSize+1)*dimensions[1]));
+        stage.setScene(new Scene(root, (tileSize+1)*(dimensions[0]+7), (tileSize+1)*dimensions[1]));
         stage.getScene().getStylesheets().add("src/style.css");
         stage.show();
 
@@ -101,15 +103,20 @@ public class Main extends Application {
 
     public void setupGameBoard(){
         GridPane gameGrid = new GridPane();
-        GridPane sidebarGrid = new GridPane();
+        GridPane sidebarGridR = new GridPane();
+        scoreGrid = new GridPane();
         boardGrid = new GridPane();
         queueGrid = new GridPane();
 
-        sidebarGrid.getStyleClass().add("sidebar");
+        queueGrid.getStyleClass().add("sidebar");
+        scoreGrid.getStyleClass().add("sidebar");
         boardGrid.getStyleClass().add("board");
-        sidebarGrid.add(queueGrid, 1, 1);
-        gameGrid.add(boardGrid, 0, 0);
-        gameGrid.add(sidebarGrid, 1, 0);
+        gameGrid.getStyleClass().add("game");
+
+        sidebarGridR.add(queueGrid, 0, 1);
+        gameGrid.add(scoreGrid, 0, 0);
+        gameGrid.add(boardGrid, 1, 0);
+        gameGrid.add(sidebarGridR, 2, 0);
         root.getChildren().add(gameGrid);
 
         for (int k = 0; k < dimensions[0]; k++) {
@@ -154,6 +161,23 @@ public class Main extends Application {
         Rectangle[][] arr = new Rectangle[4][3];
         piece.putInBounds(arr);
         piece.addToArray(arr);
+
+        for(int i = 3; i > 0; i--) {
+            boolean canRemove = true;
+            for (Rectangle rect : arr[i]) {
+                if (rect != null) {
+                    canRemove = false;
+                    break;
+                }
+            }
+
+            if(canRemove){
+                arr = new Rectangle[i][3];
+                piece.putInBounds(arr);
+                piece.addToArray(arr);
+            }
+        }
+
         updateGridPane(region, arr);
 
         return region;
@@ -163,10 +187,13 @@ public class Main extends Application {
         ArrayList<Tetromino> queue = board.queue;
         boardGrid.getChildren().clear();
         queueGrid.getChildren().clear();
+        scoreGrid.getChildren().clear();
 
         updateGridPane(boardGrid, arr);
         for(int i = 0; i < queue.size(); i++)
             queueGrid.add(queueRegion(queue.get(i)), 0, i);
+        scoreGrid.add(new Label("Score: " + String.format("%05d", board.score)), 0, 0);
+        scoreGrid.add(new Label("Level: " + board.level), 0, 1);
     }
 
     public static void main(String[] args) {

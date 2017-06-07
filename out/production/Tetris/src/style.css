@@ -7,8 +7,13 @@
     cell-border-color: white;
 }
 
+.game{
+    -fx-background-color: cell-border-color;
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+}
+
 .board{
-    -fx-background-insets: 10;
     -fx-background-color: cell-color;
     -fx-hgap: 1;
     -fx-vgap: 1;

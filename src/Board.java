@@ -33,7 +33,7 @@ public class Board
 	}
 
 	public static long getDelay(int level) {
-		return 1500/level;
+		return 500/level;
 	}
 
 	public Board(int x, int y /*Dimensions*/, Main m){
@@ -85,7 +85,7 @@ public class Board
 			int roundLinesCleared = drop();
 			linesCleared += roundLinesCleared;
 			score += getScore(roundLinesCleared, level, streak);
-			if (linesCleared > 0 && linesCleared % 20 == 0)
+			if (roundLinesCleared > 0 && linesCleared % 20 == 0)
 				level++;
 		}
 
@@ -116,6 +116,8 @@ public class Board
 		{
 			System.out.println("New Piece");
 			currentPiece = queue.get(0);
+			currentPiece.pos.x = 5;
+			currentPiece.pos.y = 0;
 			queue.remove(0);
 			populateQueue();
 		}
