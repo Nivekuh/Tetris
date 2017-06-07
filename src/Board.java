@@ -17,6 +17,7 @@ public class Board
 
 	public Rectangle[][] board; /*Row, Column*/
 	public ArrayList<Tetromino> queue;
+	public ArrayList<Tetromino> hold;
 	public Tetromino currentPiece;
 	private Main main;
 	static int x = 10;
@@ -28,18 +29,22 @@ public class Board
 	int linesCleared = 0;
 	int streak = 0;
 
-	public static int[] getDimensions() {
+	public static int[] getDimensions()
+	{
 		return new int[]{x, y};
 	}
 
-	public static long getDelay(int level) {
+	public static long getDelay(int level)
+	{
 		return 500/level;
 	}
 
-	public Board(int x, int y /*Dimensions*/, Main m){
+	public Board(int x, int y /*Dimensions*/, Main m)
+	{
 		main = m;
 		board = new Rectangle[y][x];
 		queue = new ArrayList<Tetromino>();
+		hold = new ArrayList<Tetromino>();
 		populateQueue();
 		init();
 	}
@@ -80,8 +85,10 @@ public class Board
 		return score;
 	}
 
-	public void gameLoop() {
-		if(!isPaused) {
+	public void gameLoop()
+	{
+		if(!isPaused)
+		{
 			int roundLinesCleared = drop();
 			linesCleared += roundLinesCleared;
 			score += getScore(roundLinesCleared, level, streak);
@@ -90,8 +97,10 @@ public class Board
 		}
 
 		Timer timer = new Timer();
-		timer.schedule(new TimerTask() {
-			public void run() {
+		timer.schedule(new TimerTask()
+		{
+			public void run()
+			{
 				Platform.runLater(new Runnable() {
 					public void run() {
 						gameLoop();
@@ -147,7 +156,8 @@ public class Board
 		return roundLinesCleared;
 	}
 
-	public void setDisplay(){
+	public void setDisplay()
+	{
 		Rectangle[][] boardC = new Rectangle[board.length][board[0].length];
 		for(int i = 0; i < board.length; i++){
 			for(int j = 0; j < board[i].length; j++)
@@ -158,19 +168,24 @@ public class Board
 		main.updateDisplay(boardC, this);
 	}
 
-	public int checkLines(Position[] posArr){
+	public int checkLines(Position[] posArr)
+	{
 		int roundLinesCleared = 0;
 
 		for(Position pos : posArr){
 			int check = 0;
-			for(Rectangle rect : board[pos.y]){
+			for(Rectangle rect : board[pos.y]
+					)
+			{
 				if(rect != null)
 					check++;
 			}
 
 			if(check == x) {
-				for(int i = pos.y; i > 0; i--){
-					for(int j = 0; j < board[i].length; j++){
+				for(int i = pos.y; i > 0; i--)
+				{
+					for(int j = 0; j < board[i].length; j++)
+					{
 						board[i][j] = board[i-1][j];
 					}
 				}
@@ -179,6 +194,24 @@ public class Board
 		}
 
 		return roundLinesCleared;
+	}
+
+	public void Hold()
+	{
+		boolean canHold = true;
+		if (canHold)
+		{
+			hold.add(currentPiece);
+			canHold = false;
+		}
+
+		else if(!canHold)
+		{
+			Tetromino tempPiece = new Tetromino();
+			tempPiece = hold.get(0);
+			hold.set(0, currentPiece);
+			currentPiece = tempPiece;
+		}
 	}
 }
 
