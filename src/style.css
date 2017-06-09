@@ -1,10 +1,9 @@
-.base{
-
-}
-
 .root {
     cell-color: ghostwhite;
     cell-border-color: white;
+}
+
+.base{
 }
 
 .game{
@@ -30,5 +29,5 @@
 }
 
 .button{
-    -fx-background-color: ghostwhite;
+    -fx-background-color: cell-color;
 }

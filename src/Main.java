@@ -35,7 +35,7 @@ public class Main extends Application {
     private GridPane queueGrid;
     private GridPane scoreGrid;
     private Board board;
-    private Label label;
+    private Button label;
     //Menu
     private Button start;
 
@@ -78,6 +78,8 @@ public class Main extends Application {
                         board.currentPiece.rotate();
                     else if(event.getCode().equals(KeyCode.X) && board.currentPiece.canRotate(board.board, board.currentPiece.pos))
                         board.currentPiece.rotate();
+                    else if(event.getCode().equals(KeyCode.SHIFT))
+                        board.hold();
 
                     if(board.currentPiece.canMoveToPosition(board.board, new Position(tX + board.currentPiece.pos.x, tY + board.currentPiece.pos.y)))
                         board.currentPiece.move(tX, tY);
@@ -92,6 +94,9 @@ public class Main extends Application {
                 if(gameState == 0) {
                     setupGameBoard();
                     board = new Board(dimensions[0], dimensions[1], m);
+                }
+                else if(gameState == 1){
+                    board.instantDrop();
                 }
             }
         });
@@ -114,9 +119,10 @@ public class Main extends Application {
         boardGrid = new GridPane();
         queueGrid = new GridPane();
 
-        label = new Label("");
-        label.setLayoutX(stage.getScene().getWidth()/2);
-        label.setLayoutX(stage.getScene().getHeight()/2);
+        label = new Button("");
+        label.setPrefWidth(.5*stage.getScene().getWidth());
+        label.setLayoutX(.25*(stage.getScene().getWidth()));
+        setGameOverlay("", 1);
 
         queueGrid.getStyleClass().add("sidebar");
         scoreGrid.getStyleClass().add("sidebar");
@@ -140,8 +146,14 @@ public class Main extends Application {
     }
 
     public void setGameOverlay(String text, int state){
-        gameState = state;
-        label.setText(text);
+        if(!text.equals("")) {
+            label.setLayoutY(.5*(stage.getScene().getHeight() - label.getHeight()));
+            gameState = state;
+            label.setText(text);
+        }
+        else {
+            label.setLayoutY(2*stage.getScene().getHeight());
+        }
     }
 
     public void updateGridPane(GridPane gridPane, Rectangle[][] arr){
@@ -208,7 +220,10 @@ public class Main extends Application {
         updateGridPane(boardGrid, arr);
         for(int i = 0; i < queue.size(); i++)
             queueGrid.add(queueRegion(queue.get(i)), 0, i);
-        scoreGrid.add(new Label("Score: " + String.format("%05d", board.score)), 0, 0);
+        if(board.hold != null) {
+            scoreGrid.add(queueRegion(board.hold), 0, 2);
+        }
+        scoreGrid.add(new Label("Score: " + String.format("%04d", board.score)), 0, 0);
         scoreGrid.add(new Label("Level: " + board.level), 0, 1);
     }
 

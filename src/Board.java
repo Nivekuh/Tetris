@@ -17,7 +17,7 @@ public class Board
 
 	public Rectangle[][] board; /*Row, Column*/
 	public ArrayList<Tetromino> queue;
-	public ArrayList<Tetromino> hold;
+	public Tetromino hold;
 	public Tetromino currentPiece;
 	private Main main;
 	static int x = 10;
@@ -45,7 +45,6 @@ public class Board
 		main = m;
 		board = new Rectangle[y][x];
 		queue = new ArrayList<Tetromino>();
-		hold = new ArrayList<Tetromino>();
 		populateQueue();
 		init();
 	}
@@ -121,21 +120,25 @@ public class Board
 		}
 	}
 
+	public void insertPiece(Tetromino piece){
+		System.out.println("New Piece");
+		currentPiece = piece;
+		piece.pos.x = 5;
+		piece.pos.y = -2;
+	}
+
 	public int drop(){
 		int roundLinesCleared = 0;
 
 		if (currentPiece == null)
 		{
-			System.out.println("New Piece");
-			currentPiece = queue.get(0);
-			currentPiece.pos.x = 5;
-			currentPiece.pos.y = -2;
+			insertPiece(queue.get(0));
 			queue.remove(0);
 			populateQueue();
 
 			for(Position pos : currentPiece.getLocations())
 			{
-				if(pos.y > -1 && pos.y < board.length && board[pos.y][pos.x] != null){
+				if(pos.y > -2 && pos.y < board.length && board[pos.y+1][pos.x] != null){
 					gameOver = true;
 					main.setGameOverlay("Game Over", 2);
 					break;
@@ -186,11 +189,11 @@ public class Board
 
 		for(Position pos : posArr){
 			int check = 0;
-			for(Rectangle rect : board[pos.y]
-					)
-			{
-				if(rect != null)
-					check++;
+			if(pos.y > -1) {
+				for (Rectangle rect : board[pos.y]) {
+					if (rect != null)
+						check++;
+				}
 			}
 
 			if(check == x) {
@@ -208,21 +211,18 @@ public class Board
 		return roundLinesCleared;
 	}
 
-	public void Hold()
+	public void hold()
 	{
-		boolean canHold = true;
-		if (canHold)
-		{
-			hold.add(currentPiece);
-			canHold = false;
+		if(hold == null){
+			hold = currentPiece;
+			insertPiece(queue.get(0));
+			queue.remove(0);
+			populateQueue();
 		}
-
-		else if(!canHold)
-		{
-			Tetromino tempPiece = new Tetromino();
-			tempPiece = hold.get(0);
-			hold.set(0, currentPiece);
-			currentPiece = tempPiece;
+		else{
+			Tetromino piece = hold;
+			hold = currentPiece;
+			insertPiece(piece);
 		}
 	}
 
