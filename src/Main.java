@@ -91,6 +91,8 @@ public class Main extends Application {
 
         start.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
+                System.out.println("Action");
+
                 if(gameState == 0) {
                     setupGameBoard();
                     board = new Board(dimensions[0], dimensions[1], m);

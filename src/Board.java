@@ -24,6 +24,7 @@ public class Board
 	static int y = 24;
 	boolean isPaused = false;
 	boolean gameOver = false;
+	boolean canHold = true;
 
 	int level = 1;
 	int score = 0;
@@ -132,6 +133,8 @@ public class Board
 
 		if (currentPiece == null)
 		{
+			canHold = true;
+
 			insertPiece(queue.get(0));
 			queue.remove(0);
 			populateQueue();
@@ -213,25 +216,26 @@ public class Board
 
 	public void hold()
 	{
-		if(hold == null){
-			hold = currentPiece;
-			insertPiece(queue.get(0));
-			queue.remove(0);
-			populateQueue();
+		if(canHold) {
+			if (hold == null) {
+				hold = currentPiece;
+				insertPiece(queue.get(0));
+				queue.remove(0);
+				populateQueue();
+			} else {
+				Tetromino piece = hold;
+				hold = currentPiece;
+				insertPiece(piece);
+			}
 		}
-		else{
-			Tetromino piece = hold;
-			hold = currentPiece;
-			insertPiece(piece);
-		}
+
+		canHold = false;
 	}
 
 	public void instantDrop()
 	{
 		while (!(currentPiece == null))
-		{
 			drop();
-		}
 	}
 }
 
