@@ -16,9 +16,12 @@ import javafx.scene.input.*;
 import javafx.scene.paint.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-
+import sun.audio.*;
+import java.io.*;
 import java.awt.*;
 import java.util.ArrayList;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 public class Main extends Application {
     final int tileSize = 20;
@@ -51,6 +54,8 @@ public class Main extends Application {
 
         setupMenu();
         setupEventHandlers();
+
+        playMusic();
     }
 
     public void setupEventHandlers(){
@@ -207,7 +212,18 @@ public class Main extends Application {
         scoreGrid.add(new Label("Level: " + board.level), 0, 1);
     }
 
-    public static void main(String[] args) {
+    public void playMusic()
+    {
+        String song = "Music.mp3";
+        Media hit = new Media(new File(song).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(hit);
+        mediaPlayer.play();
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaPlayer.play();
+    }
+
+    public static void main(String[] args)
+    {
         launch(args);
     }
 }
