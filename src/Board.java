@@ -225,5 +225,13 @@ public class Board
 			currentPiece = tempPiece;
 		}
 	}
+
+	public void instantDrop()
+	{
+		while (!(currentPiece == null))
+		{
+			drop();
+		}
+	}
 }
 
